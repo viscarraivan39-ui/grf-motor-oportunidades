@@ -1,0 +1,125 @@
+{
+  "id": "fixture-example-001",
+  "source": {
+    "platform": "Mercado Público",
+    "process_id": "EJEMPLO-1234-56-LE26",
+    "url": "https://example.invalid/mercadopublico/EJEMPLO-1234-56-LE26",
+    "captured_at": "2026-08-17T00:00:00Z"
+  },
+  "identification": {
+    "title": "Servicio de poda y manejo forestal sector X",
+    "buyer": "Municipalidad de Ejemplo",
+    "type": "Licitación Pública",
+    "status": "Publicada"
+  },
+  "dates": {
+    "publication": "2026-08-01",
+    "questions_deadline": "2026-08-08",
+    "closing": "2026-08-15",
+    "evaluation": null,
+    "award": null
+  },
+  "commercial": {
+    "estimated_amount": 15000000,
+    "currency": "CLP",
+    "budget_available": {
+      "value": "Presupuesto referencial disponible en las bases.",
+      "availability": "document",
+      "source_evidence": "Bases Administrativas, sección 4"
+    }
+  },
+  "location": {
+    "region": "Biobío",
+    "commune": "Comuna de Ejemplo",
+    "execution_location": {
+      "value": "Sector X",
+      "availability": "unstructured",
+      "source_evidence": "Especificaciones Técnicas, sección 2"
+    },
+    "remote_possible": {
+      "value": false,
+      "availability": "verified",
+      "source_evidence": "Especificaciones Técnicas, sección 2"
+    }
+  },
+  "requirements": {
+    "experience": {
+      "value": "Acreditar experiencia en servicios similares.",
+      "availability": "document",
+      "source_evidence": "Bases Administrativas, sección 5.1"
+    },
+    "technical": {
+      "value": "Cumplir especificaciones técnicas del servicio.",
+      "availability": "document",
+      "source_evidence": "Especificaciones Técnicas"
+    },
+    "personnel": {
+      "value": null,
+      "availability": "not_available"
+    },
+    "equipment": {
+      "value": "Herramientas y equipamiento adecuados para ejecución.",
+      "availability": "unstructured",
+      "source_evidence": "Especificaciones Técnicas, sección 3"
+    },
+    "certifications": {
+      "value": null,
+      "availability": "not_available"
+    },
+    "legal": {
+      "value": "Cumplir requisitos legales y administrativos indicados en las bases.",
+      "availability": "document",
+      "source_evidence": "Bases Administrativas, sección 3"
+    },
+    "tax": {
+      "value": null,
+      "availability": "not_available"
+    },
+    "labor": {
+      "value": null,
+      "availability": "not_available"
+    }
+  },
+  "submission": {
+    "documents": {
+      "value": ["Oferta económica", "Antecedentes administrativos"],
+      "availability": "document",
+      "source_evidence": "Bases Administrativas, sección 6"
+    },
+    "guarantees": {
+      "value": null,
+      "availability": "not_available"
+    },
+    "mandatory_forms": {
+      "value": ["Formulario de identificación del oferente"],
+      "availability": "document",
+      "source_evidence": "Anexo 1"
+    },
+    "site_visit": {
+      "value": false,
+      "availability": "verified",
+      "source_evidence": "Bases Administrativas, sección 7"
+    }
+  },
+  "evaluation": {
+    "criteria": {
+      "value": ["Precio", "Experiencia", "Cumplimiento técnico"],
+      "availability": "document",
+      "source_evidence": "Bases Administrativas, sección 8"
+    },
+    "price_weight": 50,
+    "technical_weight": 30,
+    "experience_weight": 20
+  },
+  "evidence": [
+    "Bases Administrativas (sintético)",
+    "Especificaciones Técnicas (sintético)",
+    "Anexo 1 (sintético)"
+  ],
+  "research": {
+    "data_available": ["title", "buyer", "type", "status", "dates", "amount", "location", "requirements", "submission", "evaluation"],
+    "data_missing": ["personnel", "certifications", "tax", "labor", "guarantees"],
+    "manual_interpretation_required": ["execution_location", "equipment"],
+    "notes": "FIXTURE SINTÉTICO. No corresponde a una licitación real y no debe utilizarse como dato de research."
+  }
+}
