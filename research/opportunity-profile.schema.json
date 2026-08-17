@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://grf.local/schemas/opportunity-profile.schema.json",
+  "title": "OpportunityProfile",
+  "description": "Representación estructurada de una oportunidad de Mercado Público, capturada para la fase de research manual (Fase 1.5) del proyecto GRF. No asume que un campo existe: cada dato ambiguo se marca con su nivel de disponibilidad real.",
+  "type": "object",
+  "definitions": {
+    "availabilityValue": {
+      "type": "object",
+      "description": "Patrón usado para todo campo cuya existencia o formato en la fuente original no está garantizado.",
+      "properties": {
+        "value": {
+          "description": "El dato en sí. Puede ser string, número, booleano, array u objeto según el campo. Usar null si availability es not_available.",
+          "type": ["string", "number", "boolean", "array", "object", "null"]
+        },
+        "availability": {
+          "type": "string",
+          "enum": ["not_available", "unstructured", "document", "verified"],
+          "description": "not_available: no existe en ninguna fuente consultada. unstructured: existe como texto libre no estructurado. document: explícito y estructurado en las bases. verified: confirmado manualmente contra la fuente original."
+        },
+        "source_evidence": {
+          "type": "string",
+          "description": "Referencia a la fuente concreta del dato: nombre de archivo, número de página, URL, o 'listado API' si viene del endpoint de licitaciones."
+        }
+      },
+      "required": ["value", "availability"]
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificador interno de GRF para este registro de research (no confundir con process_id)."
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "platform": { "type": "string", "default": "Mercado Público" },
+        "process_id": { "type": "string", "description": "Código oficial del proceso, ej. 1234-56-LE26" },
+        "url": { "type": "string", "format": "uri" },
+        "captured_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["process_id", "url", "captured_at"]
+    },
+    "identification": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "buyer": { "type": "string" },
+        "type": {
+          "type": "string",
+          "description": "Tipo de proceso: Licitación Pública, Licitación Privada, Compra Ágil, Trato Directo, etc."
+        },
+        "status": { "type": "string" }
+      },
+      "required": ["title", "buyer", "type", "status"]
+    },
+    "dates": {
+      "type": "object",
+      "properties": {
+        "publication": { "type": "string", "format": "date" },
+        "questions_deadline": { "type": ["string", "null"], "format": "date" },
+        "closing": { "type": "string", "format": "date" },
+        "evaluation": { "type": ["string", "null"], "format": "date" },
+        "award": { "type": ["string", "null"], "format": "date" }
+      }
+    },
+    "commercial": {
+      "type": "object",
+      "properties": {
+        "estimated_amount": { "type": ["number", "null"] },
+        "currency": { "type": "string", "default": "CLP" },
+        "budget_available": { "$ref": "#/definitions/availabilityValue" }
+      }
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "region": { "type": "string" },
+        "commune": { "type": "string" },
+        "execution_location": { "$ref": "#/definitions/availabilityValue" },
+        "remote_possible": { "$ref": "#/definitions/availabilityValue" }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "description": "Cada categoría de requisito usa el patrón availabilityValue porque su presencia y formato varía mucho entre procesos.",
+      "properties": {
+        "experience": { "$ref": "#/definitions/availabilityValue" },
+        "technical": { "$ref": "#/definitions/availabilityValue" },
+        "personnel": { "$ref": "#/definitions/availabilityValue" },
+        "equipment": { "$ref": "#/definitions/availabilityValue" },
+        "certifications": { "$ref": "#/definitions/availabilityValue" },
+        "legal": { "$ref": "#/definitions/availabilityValue" },
+        "tax": { "$ref": "#/definitions/availabilityValue" },
+        "labor": { "$ref": "#/definitions/availabilityValue" }
+      }
+    },
+    "submission": {
+      "type": "object",
+      "properties": {
+        "documents": { "$ref": "#/definitions/availabilityValue" },
+        "guarantees": { "$ref": "#/definitions/availabilityValue" },
+        "mandatory_forms": { "$ref": "#/definitions/availabilityValue" },
+        "site_visit": { "$ref": "#/definitions/availabilityValue" }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "properties": {
+        "criteria": { "$ref": "#/definitions/availabilityValue" },
+        "price_weight": { "type": ["number", "null"] },
+        "technical_weight": { "type": ["number", "null"] },
+        "experience_weight": { "type": ["number", "null"] }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Lista de documentos/fuentes revisadas para construir este registro (nombres de archivo de bases, anexos, etc.).",
+      "items": { "type": "string" }
+    },
+    "research": {
+      "type": "object",
+      "description": "Metadatos del proceso de investigación en sí — esto es lo que realmente se analiza al cerrar la Fase 1.5.",
+      "properties": {
+        "data_available": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Campos que sí vinieron completos y estructurados."
+        },
+        "data_missing": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Campos que el modelo conceptual esperaba pero la fuente no entregó."
+        },
+        "manual_interpretation_required": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Campos donde hubo que leer texto libre y decidir subjetivamente qué significaba."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Cualquier sorpresa, contradicción o hallazgo relevante para ajustar el modelo de datos."
+        }
+      }
+    }
+  },
+  "required": ["id", "source", "identification", "requirements", "research"]
+}
